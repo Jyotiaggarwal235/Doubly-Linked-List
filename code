@@ -1,0 +1,237 @@
+#include <stdio.h>
+#include<conio.h>
+#include <stdlib.h>
+void addBegin(void);
+void addinmid(void);
+int lenght();
+void display(void);
+void delete(void);
+void reverse(void);
+struct node
+{
+    int data;
+    struct node* right;
+    struct node* left;
+
+};
+struct node* root=NULL;
+int len,l;
+
+void main()
+{
+    int choice;
+    while(1)
+    {
+    
+    printf("\n1.add at end");
+    printf("\n2.add at begin");
+    printf("\n3.add in middle");
+    printf("\n4.lenght");
+    printf("\n5.display");
+    printf("\n6.Delete");
+    printf("\n7.Reverse");
+    printf("\n8.Exit\n");
+    printf("\nenter your choice=");
+    scanf("\n\n%d",&choice);
+    switch(choice)
+    {
+    case 1: append();
+    break;
+    case 2: addBegin();
+    break;
+    case 3: addinmid();
+    break;
+    case 4 :l=lenght();
+    printf("lenght=%d",l);
+    break;
+    case 5: display();
+    break;
+    case 6: delete();
+    break;
+    case 7: reverse();
+    break;
+    case 8: exit(1);
+    default: printf("\nInvalid");
+    }
+    }
+    getch();
+}
+
+
+
+void addBegin()
+{
+     struct node*temp,*p;
+    temp=(struct node*)malloc(sizeof(struct node));
+    printf("\nEnter data=");
+    scanf("%d",&temp->data);
+    temp->right=NULL;
+    temp->left=NULL;
+    if(root==NULL)
+    {
+        root=temp;
+    }
+    else
+    {
+        temp->right=root;
+        root->left=temp;
+        root=temp;
+    }
+}
+
+    
+void addinmid()
+{
+    struct node*temp,*p=root;
+    len=lenght();
+    int loc;
+    printf("\nEnter location=");
+    scanf("%d",&loc);
+    if(loc>len)
+    {
+        printf("\nInvalid location");
+    }
+    else
+    {
+    
+    temp=(struct node*)malloc(sizeof(struct node));
+    printf("Enter data=");
+    scanf("%d",&temp->data);
+    temp->right=NULL;
+    temp->left=NULL;
+    int i=1;
+        while(i<loc-1)
+        {
+            p=p->right;
+            i++;
+        }
+        temp->right=p->right;
+        
+        temp->left=p;
+        
+        p->right=temp;
+        p->right->left=temp;
+       }
+}
+
+int lenght()
+{
+    struct node*temp=root;
+    
+    int count=0;
+    while(temp!=NULL)
+    {
+      count++;
+      temp=temp->right;
+    }
+    return count;
+}
+    
+ void display()
+ {
+     struct node*temp=root;
+     if(temp==NULL)
+     {
+         printf("\nList is empty");
+     }
+    else
+    {
+    while(temp!=NULL)
+    {
+      printf("%d-->",temp->data);
+      temp=temp->right;
+    }
+        
+    }
+}
+void append()
+{
+    struct node*temp,*p=root;
+    temp=(struct node*)malloc(sizeof(struct node));
+    printf("\nEnter data=");
+    scanf("%d",&temp->data);
+    temp->right=NULL;
+    temp->left=NULL;
+    if(root==NULL)
+    {
+        root=temp;
+    }
+    else
+    {
+        while(p->right!=NULL)
+        {
+            p=p->right;
+        }
+         p->right=temp;
+        temp->left=p;
+        temp->right=NULL;
+       
+}
+}
+void delete()
+{   struct node* temp;
+    int loc;
+    len=lenght();
+    printf("\nEnter the location you want to delete=");
+    scanf("%d",&loc);
+    if(loc>len)
+    {
+        printf("Invalid location");
+    }
+    else if(loc==1)
+    {
+        temp=root;
+        root=root->right;
+        root->left=NULL;
+        free(temp);
+    }
+    else if(loc==len)
+    {
+        struct node*p=root;
+        int i=1;
+        while(p->right!=NULL)
+        {
+            p=p->right;
+        }
+        p->left->right=NULL;
+        free(p);
+    }
+    else
+    {
+        struct node*p=root;
+        int i=1;
+        while(i<loc-1)
+        {
+            p=p->right;
+            i++;
+        }
+        temp=p->right;
+        p->right=temp->right;
+        temp->right->left=p;
+        free(temp);
+    }
+}
+void reverse()
+{
+    len=lenght();
+    int i=0,j=len-1,k=0;
+    struct node*p,*q,*temp;
+    p=root;
+    q=root;
+    while(i<j)
+    {
+        k=0;
+        while(k<j)
+        {
+            q=q->right;
+            k++;
+        }
+        temp=p->data;
+        p->data=q->data;
+        q->data=temp;
+        i++;
+        j--;
+        p=p->right;
+        q=q->left;
+    }
+}
